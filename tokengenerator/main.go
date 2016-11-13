@@ -1,4 +1,4 @@
-package main
+package tokengenerator
 /*
 #cgo LDFLAGS: -luuid
 #cgo CFLAGS: -I /usr/include/
@@ -35,29 +35,16 @@ unsigned char * getNextToken() {
 */
 import "C"
 import "unsafe"
-import "fmt"
-//import "bytes"
 
 type uuid struct { }
 
-func (u uuid) New() ([]byte) {
+func New() ([]byte) {
+	var b []byte
 	var _, err = C.allocUuidBuf(1)
-	if err != nil {
-		fmt.Println("Error: ", err)
-		return nil
-	}
 	defer C.freeUuidBuf()
 	_, err = C.populateBuf()
 	if err != nil {
-		fmt.Println("Error: ", err)
-		return nil
+		b = C.GoBytes(unsafe.Pointer(C.getNextToken()), C.p_sizeOfUuid)	
 	}
-	b := C.GoBytes(unsafe.Pointer(C.getNextToken()), C.p_sizeOfUuid)	
 	return b
-}
-
-func main() {
-	s := uuid{}
-	fmt.Println("hello uuid:", s.New())	
-	return
 }
