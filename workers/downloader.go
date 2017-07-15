@@ -6,9 +6,12 @@ import (
 "context"
 )
 
-func Downloader(ctx context.Context, url interface{}) {
+type foo struct { url string }
+
+func Downloader(ctx context.Context, desc interface{}) (func() (interface{}, error)) {
 	log.Println("downloader")
-	response, err := http.Get(url.(string))
+	url := desc.(string)
+	response, err := http.Get(url);
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -18,8 +21,6 @@ func Downloader(ctx context.Context, url interface{}) {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	responseString := string(responseData)
-
-	log.Println(responseString)
+	
+	return func() (interface{}, error) { return responseData, nil }
 }
