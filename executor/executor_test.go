@@ -1,8 +1,11 @@
 package executor
 
 import(
-	"testing"
-	"context"
+"testing"
+"context"
+_ "os"
+_ "io"
+"encoding/hex"
 )
 
 type mockEngine struct { }	
@@ -25,28 +28,22 @@ func TestWorker(t *testing.T) {
 		t.Error("error", err)
 	}
 
-	// Set arguments for worker. Can be used to Initialize values.
-	//rootContext, cancel :=  context.WithTimeout(context.Background(), 5*1000)
 	funWork := worker(context.Background(), "http://example.com")
 
-	// Execute work closure. Shares scope with worker. Go thread test
-	//defer cancel()
-	//go funWork()
-	
-	// Storing the result to same variable in Context. Taking runtime parameter timetout.
 	value, err := funWork(int(3))
 
 	ctx := value.(context.Context)
 
-	// Convert results to string
-	// Id is the unique id of the worker
 	if err != nil {
+		t.Log("Got error")
 		t.Log(err)
 	} else if ctx.Value("id") == nil {
 		t.Log("Fail id is nill")
 	} else {
-		t.Log(string(ctx.Value("id").(byte)))
+		t.Log("Output id")
+		t.Log(hex.Dump(ctx.Value("id").([]byte)[:]))
 	}
 
-	t.Log(string(ctx.Value("responseData").([]byte)))
+//	t.Log(string(ctx.Value("responseData").([]byte)))
+//	io.Copy(os.Stdout, ctx.Value("ResponseBody").(io.ReadCloser))
 }

@@ -34,7 +34,10 @@ unsigned char * getNextToken() {
 }
 */
 import "C"
-import "unsafe"
+import (
+"log"
+"unsafe"
+)
 
 type TokenGenerator interface {
 	New() []byte
@@ -47,15 +50,17 @@ func NewTokenGenerator() (TokenGenerator) {
 	return &TokenGeneratorImp{}
 	}
 
-type uuid struct { }
-
 func (tg TokenGeneratorImp) New() ([]byte) {
 	var b []byte
 	var _, err = C.allocUuidBuf(1)
 	defer C.freeUuidBuf()
 	_, err = C.populateBuf()
-	if err != nil {
+
+	if err == nil {
 		b = C.GoBytes(unsafe.Pointer(C.getNextToken()), C.p_sizeOfUuid)	
-		}
+	} else {
+			log.Fatal("Error in togen")
+	}
+
 	return b
 	}

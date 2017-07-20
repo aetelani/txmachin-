@@ -2,7 +2,7 @@ package executor
 
 import(
 	"log"
-togen "txmachinae/tokengenerator"
+//togen "txmachinae/tokengenerator"
 "context"
 _ "container/list"
 "plugin"
@@ -26,7 +26,7 @@ type Process struct {
 
 func NewProcess() (*Process) {
 	var process *Process = &Process {
-		id:togen.NewTokenGenerator().New(),
+		//id:togen.NewTokenGenerator().New(),
 		rootContext:context.Background()}
 	return process
 }
