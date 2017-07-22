@@ -36,13 +36,13 @@ func DownloadStreamer(ctx context.Context, desc interface{}) (func(interface{}) 
 		
 		var response *http.Response
 
-		req = req.WithContext(localCtx)
-		
 		localCtx = context.WithValue(localCtx, "InboundInitiated", time.Now().UTC())
+
+		req = req.WithContext(localCtx)
 
 		response, err = client.Do(req);
 		
-		return localCtx, response.Body, err
+		return localCtx, &response.Body, err
 		}
 }
 

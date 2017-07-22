@@ -32,7 +32,7 @@ func TestWorker2(t *testing.T) {
 	
 	_ = ctx
 	
-	io.Copy(os.Stdout, response.(io.ReadCloser))
+	io.Copy(os.Stdout, *response.(*io.ReadCloser))
 }
 
 /*
