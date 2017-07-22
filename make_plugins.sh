@@ -15,5 +15,6 @@ clean() {
 }
 
 clean
-build "downloader"
+#build "downloader"
+build "downloadstreamer"
 cd ${ROOTDIR}

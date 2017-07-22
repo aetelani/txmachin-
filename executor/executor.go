@@ -31,7 +31,7 @@ func NewProcess() (*Process) {
 	return process
 }
 
-func NewWorker(moniker string) ((func(context.Context, interface{}) (func(interface{}) (interface{}, error))), error) {
+func NewWorker(moniker string) ((func(context.Context, interface{}) (func(interface{}) (context.Context, interface{}, error))), error) {
 	const (
 		pluginPath string = "../workers/"
 		postfix string = ".so"
@@ -45,7 +45,7 @@ func NewWorker(moniker string) ((func(context.Context, interface{}) (func(interf
 		log.Fatal(e)
 	}
 	// Fix this with type alias when supported.
-	funWorker := fun.(func(context.Context, interface{}) (func(interface{}) (interface{}, error)))
+	funWorker := fun.(func(context.Context, interface{}) (func(interface{}) (context.Context, interface{}, error)))
 	return funWorker, nil
 }
 

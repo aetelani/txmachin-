@@ -3,9 +3,9 @@ package executor
 import(
 "testing"
 "context"
-_ "os"
-_ "io"
-"encoding/hex"
+"os"
+"io"
+_ "encoding/hex"
 )
 
 type mockEngine struct { }	
@@ -18,7 +18,24 @@ func TestInitialize(t *testing.T) {
 	}
 }
 
+func TestWorker2(t *testing.T) {
+	// Load Downloader plugin
+	worker, err := NewWorker("DownloadStreamer")
 
+	if err != nil {
+		t.Error("error", err)
+	}
+
+	funWork1 := worker(context.Background(), "http://example.com")
+
+	ctx, response, err := funWork1(nil)
+	
+	_ = ctx
+	
+	io.Copy(os.Stdout, response.(io.ReadCloser))
+}
+
+/*
 func TestWorker(t *testing.T) {
 
 	// Load Downloader plugin
@@ -47,3 +64,4 @@ func TestWorker(t *testing.T) {
 //	t.Log(string(ctx.Value("responseData").([]byte)))
 //	io.Copy(os.Stdout, ctx.Value("ResponseBody").(io.ReadCloser))
 }
+*/
