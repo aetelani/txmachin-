@@ -1,14 +1,14 @@
 package executor
 
-import(
-"testing"
-"context"
-"os"
-"io"
-_ "encoding/hex"
+import (
+	"context"
+	_ "encoding/hex"
+	"io"
+	"os"
+	"testing"
 )
 
-type mockEngine struct { }	
+type mockEngine struct{}
 
 func TestInitialize(t *testing.T) {
 	m := mockEngine{}
@@ -29,9 +29,9 @@ func TestWorker2(t *testing.T) {
 	funWork1 := worker(context.Background(), "http://example.com")
 
 	ctx, response, err := funWork1(nil)
-	
+
 	_ = ctx
-	
+
 	io.Copy(os.Stdout, *response.(*io.ReadCloser))
 }
 

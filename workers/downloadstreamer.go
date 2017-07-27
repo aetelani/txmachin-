@@ -1,26 +1,27 @@
 package main
+
 import (
-"log"
-"net/http"
-"context"
-idgen "txmachinae/tokengenerator"
-"time"
+	"context"
+	"log"
+	"net/http"
+	"time"
+	idgen "txmachinae/tokengenerator"
 )
 
-func DownloadStreamer(ctx context.Context, desc interface{}) (func(interface{}) (context.Context, interface{}, error)) {
+func DownloadStreamer(ctx context.Context, desc interface{}) func(interface{}) (context.Context, interface{}, error) {
 
 	const (
-		name string = "DownloadStreamer"
-		version int = 0
+		name    string = "DownloadStreamer"
+		version int    = 0
 	)
-	
+
 	log.Println("Initializing " + name + "." + string(version))
 
 	var (
 		localCtx context.Context
-		client *http.Client
+		client   *http.Client
 		response *http.Response
-		url string = desc.(string)
+		url      string = desc.(string)
 	)
 
 	uid := idgen.NewTokenGenerator().New()
@@ -30,7 +31,7 @@ func DownloadStreamer(ctx context.Context, desc interface{}) (func(interface{}) 
 	tr := http.DefaultTransport
 
 	client = &http.Client{Transport: tr}
-	
+
 	return func(rt interface{}) (context.Context, interface{}, error) {
 
 		req, err := http.NewRequest("GET", url, nil)
@@ -39,9 +40,8 @@ func DownloadStreamer(ctx context.Context, desc interface{}) (func(interface{}) 
 
 		req = req.WithContext(localCtx)
 
-		response, err = client.Do(req);
-		
-		return localCtx, &response.Body, err
-		}
-}
+		response, err = client.Do(req)
 
+		return localCtx, &response.Body, err
+	}
+}
