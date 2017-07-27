@@ -19,6 +19,7 @@ func DownloadStreamer(ctx context.Context, desc interface{}) (func(interface{}) 
 	var (
 		localCtx context.Context
 		client *http.Client
+		response *http.Response
 		url string = desc.(string)
 	)
 
@@ -33,8 +34,6 @@ func DownloadStreamer(ctx context.Context, desc interface{}) (func(interface{}) 
 	return func(rt interface{}) (context.Context, interface{}, error) {
 
 		req, err := http.NewRequest("GET", url, nil)
-		
-		var response *http.Response
 
 		localCtx = context.WithValue(localCtx, "InboundInitiated", time.Now().UTC())
 
