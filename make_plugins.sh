@@ -1,5 +1,5 @@
 #!/bin/sh
-ROOTDIR=~/src/gocode/src/txmachinae
+ROOTDIR=~/go/src/txmachinae
 WORKERS=$ROOTDIR/workers
 cd ${WORKERS} || exit 1
 build() {
@@ -15,7 +15,7 @@ clean() {
 }
 
 clean
-#build "downloader"
-#build "downloadstreamer"
+build "downloader"
+build "downloadstreamer"
 build "poststreamer"
 cd ${ROOTDIR}
